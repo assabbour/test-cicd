@@ -1,16 +1,12 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_IMAGE = "angular-app:latest"
-        APP_PORT = "8080"
-    }
     stages {
-        stage('Clean Workspace') {
+        stage('Debugging') {
             steps {
-                cleanWs() // Nettoyer l'espace de travail
+                echo 'Pipeline is running. Reached Debugging stage.'
             }
         }
-        stage('Clone Repository') {
+        stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/assabbour/test-cicd.git'
             }
@@ -23,11 +19,12 @@ pipeline {
         stage('Build Angular Application') {
             steps {
                 sh 'npm run build --prod'
+                sh 'ls -la dist'
             }
         }
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE} ."
+                sh "docker build -t angular-app:latest ."
             }
         }
         stage('Run Docker Container') {
@@ -35,22 +32,17 @@ pipeline {
                 sh """
                 docker stop angular-app || true
                 docker rm angular-app || true
-                docker run -d --name angular-app -p ${APP_PORT}:80 ${DOCKER_IMAGE}
+                docker run -d --name angular-app -p 8080:80 angular-app:latest
                 """
-            }
-        }
-        stage('Verify Deployment') {
-            steps {
-                sh 'docker ps | grep angular-app'
             }
         }
     }
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Pipeline executed successfully.'
         }
         failure {
-            echo 'Pipeline failed. Check the logs.'
+            echo 'Pipeline execution failed.'
         }
     }
 }
