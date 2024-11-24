@@ -44,6 +44,12 @@ pipeline {
                 sh "docker build -t ${DOCKER_IMAGE} ."
             }
         }
+        stage('Verify Build Output') {
+        steps {
+        sh 'ls -la dist'
+            }
+        }
+
         stage('Test Docker Container') {
             steps {
                 sh "docker run --rm ${DOCKER_IMAGE} echo 'Container works!'"
