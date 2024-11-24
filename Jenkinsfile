@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE = "angular-app:latest"
-        APP_PORT = "80"
+        APP_PORT = "8080"
     }
     parameters {
         string(name: 'APP_PORT', defaultValue: '80', description: 'Port sur lequel déployer l’application')
