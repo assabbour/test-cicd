@@ -61,6 +61,12 @@ pipeline {
                 sh 'docker system prune -f'
             }
         }
+        stage('Verify Deployment') {
+            steps {
+                sh 'docker ps | grep angular-app'
+            }   
+        }
+
     }
     post {
         success {
