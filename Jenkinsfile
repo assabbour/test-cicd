@@ -34,7 +34,9 @@ pipeline {
         }
         stage('Build Angular Application') {
             steps {
+                 sh 'npm install'
                 sh 'npm run build --prod'
+                sh 'ls -la dist' // Vérifie que le dossier dist existe
             }
         }
         stage('Build Docker Image') {
