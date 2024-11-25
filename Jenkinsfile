@@ -32,7 +32,7 @@ pipeline {
                 sh """
                 docker stop angular-app || true
                 docker rm angular-app || true
-                docker run -d --name angular-app -p 8080:80 angular-app:latest
+                docker run -d --name angular-app -p 8081:80 angular-app:latest
                 """
             }
         }
