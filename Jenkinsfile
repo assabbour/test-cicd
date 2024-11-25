@@ -1,11 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Debugging') {
-            steps {
-                echo 'Pipeline is running. Reached Debugging stage.'
-            }
-        }
         stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/assabbour/test-cicd.git'
@@ -19,12 +14,11 @@ pipeline {
         stage('Build Angular Application') {
             steps {
                 sh 'npm run build --prod'
-                sh 'ls -la dist'
             }
         }
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t angular-app:latest ."
+                sh 'docker build -t angular-app:latest .'
             }
         }
         stage('Run Docker Container') {
